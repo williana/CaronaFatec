@@ -1,0 +1,49 @@
+.navbar
+  .navbar-inner
+    .container
+      a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.brand(href='#') Carona Fatec
+      .nav-collapse
+        ul.nav
+          li.active
+            a(href='#') Home
+          li
+            a(href='#') Carona
+          li
+            a(href='#') Sei lá
+        ul.nav.pull-right
+          li.divider-vertical
+          - if (user)
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                i.icon-user
+                | #{user.name}
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='#')
+                    i.icon-edit  
+                    | Editar Conta
+                li
+                  a(href='#')
+                    i.icon-remove  
+                    | Remover Conta
+                li
+                  a(href='#')
+                    i.icon-envelope  
+                    | Mensagens
+                li
+                  a(href='#')
+                    i.icon-retweet  
+                    | Alterar Senha
+                li.divider
+                li
+                  a(href='#')
+                    i.icon-off  
+                    | Deslogar
+          - else
+            li
+              a(href='#') Login/Cadastro
