@@ -1,0 +1,22 @@
+{% extends 'sistema/base.html' %}
+{% load bootstrap_toolkit %}
+
+{% block content %}
+	<form method="POST">
+		{% csrf_token %}
+<h3>Alterar senha:</h3>
+		<div class="row">
+			<div class="span12">
+				{{ form.password|as_bootstrap }}
+				{{ form.password_conf|as_bootstrap }}
+			</div>
+		</div>
+
+		<input type="submit" class="btn">
+	</form>	
+
+{% endblock %}
+
+{% block js %}
+	{{ form.media.js }}
+{% endblock %}

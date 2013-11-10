@@ -1,0 +1,54 @@
+{% extends 'sistema/base.html' %}
+{% load bootstrap_toolkit %}
+{% block content %}
+
+    <div class="row">
+
+        <div class="span3">
+            <ul>
+            {% for destinatario in destinatarios %}
+                <li>
+                    <a href="{% url mensagem des_pk=destinatario.pk %}">
+                        {{destinatario}}
+                    </a>
+                </li>
+            {% empty %}
+                Nenhuma Mensagem
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div class="span9">
+            {% if mensagens_des %}
+            <div style="overflow-y:scroll;height:350px" id="msg_cont">
+                <ul>
+                {% for men_des in mensagens_des %}
+
+                <li>
+                    {{ men_des.remetente }}:
+
+                    {{ men_des.mensagem }}
+                    <h6>{{ men_des.data }}</h6>
+                </li>
+
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <h4>Nova Mensagem{% if destinatario %} para {{ destinatario }}{% endif %}</h4>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|as_bootstrap }}
+                <input type="submit">
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    document.getElementById('msg_cont').scrollTop = 1000000;
+</script>
+{% endblock %}

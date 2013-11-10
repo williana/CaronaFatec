@@ -1,0 +1,41 @@
+{% extends 'sistema/base.html' %}
+{% load bootstrap_toolkit %}
+
+{% block content %}
+	<form method="POST">
+		{% csrf_token %}
+		
+		<div class="row">
+			<div class="span6">
+				{{ form.nome|as_bootstrap }}
+				{{ form.sobrenome|as_bootstrap }}
+				{{ form.email|as_bootstrap }}
+				{{ form.periodo|as_bootstrap }}
+				{{ form.tipo|as_bootstrap }}
+				{{ form.curso|as_bootstrap }}
+			</div>
+
+			<div class="span6">
+				{{ form.municipio|as_bootstrap }}
+				{{ form.bairro|as_bootstrap }}
+				{{ form.rua|as_bootstrap }}
+				{{ form.numero|as_bootstrap }}
+				{{ form.complemento|as_bootstrap }}
+			</div>
+		</div>
+		{% if not form.instance.user %}
+		<div class="row">
+			<div class="span12">
+				{{ form.senha|as_bootstrap }}
+				{{ form.senha_conf|as_bootstrap }}
+			</div>
+		</div>
+		{% endif %}
+		<input type="submit" class="btn">
+	</form>	
+
+{% endblock %}
+
+{% block js %}
+	{{ form.media.js }}
+{% endblock %}
