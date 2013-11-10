@@ -12,14 +12,52 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script>
 var map;
+
+var pontos = {{ pontos_json|safe }};
+var markers = Array();
+
 function initialize() {
-  var mapOptions = {
-    zoom: 12,
-    center: new google.maps.LatLng(-23.179080, -45.887248),
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
-  map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
+
+  map = new google.maps.Map(
+    document.getElementById('map-canvas'),
+    {
+      zoom: 12,
+      center: new google.maps.LatLng(-23.179080, -45.887248),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+  for (var i=0; i < pontos.length; i++) {
+    var obj = pontos[i];
+
+    var myMarker = new google.maps.Marker({
+      position: new google.maps.LatLng(parseFloat(obj.lat), parseFloat(obj.lng)),
+      draggable: false,
+      map: map,
+      title: 'Ponto'
+    });
+    
+    var contentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h1 id="firstHeading" class="firstHeading">'+obj.nome+'</h1>'+
+        '<div id="bodyContent">'+
+        '<p>Período: '+ obj.periodo +'</p>'+
+        '<p><a href="#">Mais</a></p>'+
+        '</div>'+
+        '</div>';
+    myMarker.info = new google.maps.InfoWindow({
+      content: contentString,
+      size: new google.maps.Size(20, 20)
+    });
+
+    google.maps.event.addListener(myMarker, 'click', function() {
+      myMarker.info.open(map, myMarker);
+      map.setCenter(myMarker.getPosition());
+      map.setZoom(15);
+    });
+
+    markers.push(myMarker);
+  }
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

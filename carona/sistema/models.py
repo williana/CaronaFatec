@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from municipios.models import Municipio
 
-PERIDO = (
+PERIODO = (
     (1, u'Manhã'),
     (2, u'Tarde'),
     (3, u'Noite'),
@@ -24,7 +24,9 @@ class Curso(models.Model):
 
 
 class Ponto(models.Model):
+    # Longitude
     x = models.CharField(max_length=255)
+    # Latitude
     y = models.CharField(max_length=255)
 
 
@@ -32,7 +34,7 @@ class Perfil(models.Model):
     user = models.OneToOneField(User)
     curso = models.ForeignKey(Curso)
     ponto = models.ForeignKey(Ponto)
-    periodo = models.SmallIntegerField(choices=PERIDO)
+    periodo = models.SmallIntegerField(choices=PERIODO)
     tipo = models.SmallIntegerField(choices=TIPO)
     municipio = models.ForeignKey(Municipio)
     bairro = models.CharField(max_length=55)

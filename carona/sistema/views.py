@@ -1,5 +1,7 @@
 # coding: utf-8
 
+import json
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
@@ -15,14 +17,30 @@ from django.utils.html import mark_safe
 from django.views.generic import ListView
 
 
-from carona.sistema.models import Perfil, Mensagem
+from carona.sistema.models import Perfil, Mensagem, Ponto
 from carona.sistema.forms import PerfilUsuarioForm, MensagemForm, AlterarSenhaForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
 
 def home(request):
-    return render(request, 'sistema/home.html', {})
+
+    perfis = Perfil.objects.all()
+
+    perfis_list = []
+
+    for p in perfis:
+        perfis_list.append({
+            'lat': p.ponto.y,
+            'lng': p.ponto.x,
+            'nome': p.user.first_name,
+            'pk': p.pk,
+            'periodo': p.get_periodo_display()
+        })
+
+    return render(request, 'sistema/home.html', {
+            'pontos_json': json.dumps(perfis_list),
+        })
 
 
 def cadastro(request, pk=None):
@@ -38,6 +56,8 @@ def cadastro(request, pk=None):
             form.save()
             messages.success(request, u'Usuário Cadastrado Com Sucesso')
             return redirect(reverse('home'))
+        else:
+            print "AAAAAAAAA", form.errors
     return render(request, 'sistema/cadastro.html', {'form': form})
 
 
